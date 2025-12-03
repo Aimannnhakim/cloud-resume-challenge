@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Resume Challenge</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .counter-box { 
+            font-size: 24px; 
+            margin-top: 20px; 
+            padding: 10px; 
+            border: 2px solid #333; 
+            display: inline-block; 
+        }
+    </style>
+</head>
+<body>
+    <h1>My Cloud Resume</h1>
+    <p>Welcome to my portfolio built with AWS, Terraform, and Python.</p>
+
+    <div class="counter-box">
+        Visitor Count: <span id="counter">Loading...</span>
+    </div>
+
+    <script>
+        // 1. Define the API Endpoint
+        // REPLACE THIS with the "api_endpoint" URL from your Terraform output
+        const apiUrl = "https://6avf6zdclgasuludrtot6jmbhm0ftrot.lambda-url.us-east-1.on.aws/"
+
+        // 2. The Fetch Function (The "I2C Read" command)
+        async function getVisitorCount() {
+            try {
+                // Initiate the request (non-blocking)
+                let response = await fetch(apiUrl);
+                
+                // Parse the JSON response body
+                let data = await response.json();
+                
+                // 3. Update the UI (Write to Display)
+                // We find the HTML element with id="counter" and change its text
+                document.getElementById("counter").innerText = data.count;
+                
+            } catch (error) {
+                console.error("Error fetching count:", error);
+                document.getElementById("counter").innerText = "Error";
+            }
+        }
+
+        // 4. Trigger the function when page loads
+        getVisitorCount();
+    </script>
+</body>
+</html>
